@@ -18,7 +18,7 @@ func NewWalletService() *WalletService {
 
 func (ws WalletService) Create(userPhone string) (*models.Wallet, error) {
 	wallet := models.Wallet{UserPhone: userPhone, Balance: 0}
-	res := ws.DB.Create(wallet)
+	res := ws.DB.Create(&wallet)
 	if res.Error != nil {
 		return nil, res.Error
 	}
