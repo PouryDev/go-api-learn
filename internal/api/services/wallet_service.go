@@ -42,3 +42,5 @@ func (ws WalletService) GetUserBalance(userPhone string) *int64 {
 
 	return &wallet.Balance
 }
+
+// TODO add statistics
