@@ -3,18 +3,18 @@ package models
 import "gorm.io/gorm"
 
 const (
-	GiftType    = "gift"
-	GatewayType = "gateway"
-	AdminType   = "admin"
-	DefaultType = "default"
+	GIFT_TYPE    = "gift"
+	GATEWAY_TYPE = "gateway"
+	ADMIN_TYPE   = "admin"
+	DEFAULT_TYPE = "default"
 )
 
 type TransactionType string
 
 func (t TransactionType) String() string {
 	str := string(t)
-	if str != GiftType && str != GatewayType && str != AdminType {
-		str = DefaultType
+	if str != GIFT_TYPE && str != GATEWAY_TYPE && str != ADMIN_TYPE {
+		str = DEFAULT_TYPE
 	}
 	return str
 }
