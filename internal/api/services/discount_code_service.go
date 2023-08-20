@@ -1,9 +1,9 @@
 package services
 
 import (
-	"api-learn/internal/api/models"
-	"api-learn/pkg/database"
 	"gorm.io/gorm"
+	"video/internal/api/models"
+	"video/pkg/database"
 )
 
 type DiscountCodeService struct {
