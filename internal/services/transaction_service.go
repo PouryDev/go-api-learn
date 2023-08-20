@@ -35,3 +35,13 @@ func (ts TransactionService) Pay(t models.Transaction) error {
 	res := ts.db.Save(t)
 	return res.Error
 }
+
+func (ts TransactionService) Find(id uint) (*models.Transaction, error) {
+	var t models.Transaction
+	res := ts.db.Model(&models.Transaction{}).Where("`id` = ?", id).First(&t)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return &t, nil
+}
