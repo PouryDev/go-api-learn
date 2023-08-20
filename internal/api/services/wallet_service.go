@@ -1,9 +1,9 @@
 package services
 
 import (
-	"api-learn/internal/api/models"
-	"api-learn/pkg/database"
 	"gorm.io/gorm"
+	"video/internal/api/models"
+	"video/pkg/database"
 )
 
 type WalletService struct {
@@ -17,7 +17,7 @@ func NewWalletService() *WalletService {
 }
 
 func (ws WalletService) Create(userPhone string) (*models.Wallet, error) {
-	wallet := models.Wallet{UserPhone: userPhone, Balance: 0}
+	wallet := models.Wallet{PhoneNumber: userPhone, Balance: 0}
 	res := ws.DB.Create(&wallet)
 	if res.Error != nil {
 		return nil, res.Error
@@ -33,14 +33,24 @@ func (ws WalletService) IncreaseBalance(wallet models.Wallet, amount int) error 
 	return res.Error
 }
 
-func (ws WalletService) GetUserBalance(userPhone string) *int64 {
+func (ws WalletService) GetUserBalance(userPhone string) (*int64, error) {
 	var wallet models.Wallet
-	res := ws.DB.Where("user_phone = ?", userPhone).First(&wallet)
+	res := ws.DB.Where("phone_number = ?", userPhone).First(&wallet)
 	if res.Error != nil {
-		return nil
+		return nil, res.Error
 	}
 
-	return &wallet.Balance
+	return &wallet.Balance, nil
+}
+
+func (ws WalletService) Find(userPhone string) (*models.Wallet, error) {
+	var wallet models.Wallet
+	res := ws.DB.Model(&models.Wallet{}).Where("phone_number = ?", userPhone).First(&wallet)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return &wallet, nil
 }
 
 // TODO add statistics
