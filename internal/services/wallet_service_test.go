@@ -3,23 +3,20 @@ package services_test
 import (
 	"fmt"
 	"github.com/bxcodec/faker/v3"
-	"os"
 	"testing"
 	"video/internal/services"
 )
 
-var phoneNumber string
+var tPhone string
+var ws *services.WalletService
 
-func TestMain(m *testing.M) {
-	phoneNumber = faker.Phonenumber()
-
-	code := m.Run()
-	os.Exit(code)
+func init() {
+	tPhone = faker.Phonenumber()
+	ws = services.NewWalletService()
 }
 
 func TestCreateWallet(t *testing.T) {
-	ws := services.NewWalletService()
-	wallet, err := ws.Create(phoneNumber)
+	wallet, err := ws.Create(tPhone)
 	if err != nil {
 		t.Error(fmt.Sprintf("Failed to create wallet: %s", err))
 	}
@@ -31,8 +28,7 @@ func TestCreateWallet(t *testing.T) {
 }
 
 func TestIncreaseBalance(t *testing.T) {
-	ws := services.NewWalletService()
-	wallet, err := ws.GetByPhoneNumber(phoneNumber)
+	wallet, err := ws.GetByPhoneNumber(tPhone)
 	if err != nil {
 		t.Error(fmt.Sprintf("Could not find wallet: %s", err))
 	}
@@ -44,7 +40,7 @@ func TestIncreaseBalance(t *testing.T) {
 	}
 	balance += 5000
 
-	wallet, err = ws.GetByPhoneNumber(phoneNumber)
+	wallet, err = ws.GetByPhoneNumber(tPhone)
 	if err != nil {
 		t.Error(err)
 	}
@@ -54,8 +50,7 @@ func TestIncreaseBalance(t *testing.T) {
 }
 
 func TestGetUserBalance(t *testing.T) {
-	ws := services.NewWalletService()
-	_, err := ws.GetUserBalance(phoneNumber)
+	_, err := ws.GetUserBalance(tPhone)
 	if err != nil {
 		t.Error(fmt.Sprintf("Could not get wallet balance from db: %s", err))
 	}

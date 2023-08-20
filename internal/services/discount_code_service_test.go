@@ -9,41 +9,41 @@ import (
 	"video/internal/services"
 )
 
-var code string
-var svc *services.DiscountCodeService
+var dCode string
+var dcs *services.DiscountCodeService
 
 func init() {
-	code = faker.Timestamp()
-	svc = services.NewDiscountCodeService()
+	dCode = faker.Timestamp()
+	dcs = services.NewDiscountCodeService()
 }
 
 func TestDiscountCodeService_Create(t *testing.T) {
 	codeType := models.DiscountCodeType(models.GIFT_CODE)
-	dc, err := svc.Create(code, 10, 1000000, codeType)
+	dc, err := dcs.Create(dCode, 10, 1000000, codeType)
 	if err != nil {
 		t.Error(err)
 	}
 
-	_, err = svc.Find(dc.ID)
+	_, err = dcs.Find(dc.ID)
 	if err != nil {
 		t.Error(err)
 	}
 }
 
 func TestDiscountCodeService_Update(t *testing.T) {
-	dc, err := svc.GetByCode(code)
+	dc, err := dcs.GetByCode(dCode)
 	if err != nil {
 		t.Error(err)
 	}
 
 	expected := int64(50000)
 	dc.Value = expected
-	err = svc.Update(*dc)
+	err = dcs.Update(*dc)
 	if err != nil {
 		t.Error(err)
 	}
 
-	dc, err = svc.GetByCode(code)
+	dc, err = dcs.GetByCode(dCode)
 	if err != nil {
 		t.Error(err)
 	}
@@ -54,18 +54,18 @@ func TestDiscountCodeService_Update(t *testing.T) {
 }
 
 func TestDiscountCodeService_IncreaseUsage(t *testing.T) {
-	dc, err := svc.GetByCode(code)
+	dc, err := dcs.GetByCode(dCode)
 	if err != nil {
 		t.Error(err)
 	}
 
 	usage := dc.MaxUsers
-	err = svc.IncreaseUsage(dc)
+	err = dcs.IncreaseUsage(dc)
 	if err != nil {
 		t.Error(err)
 	}
 
-	dc, err = svc.GetByCode(code)
+	dc, err = dcs.GetByCode(dCode)
 	if err != nil {
 		t.Error(err)
 	}
@@ -76,17 +76,17 @@ func TestDiscountCodeService_IncreaseUsage(t *testing.T) {
 }
 
 func TestDiscountCodeService_Delete(t *testing.T) {
-	dc, err := svc.GetByCode(code)
+	dc, err := dcs.GetByCode(dCode)
 	if err != nil {
 		t.Error(err)
 	}
 
-	err = svc.Delete(*dc)
+	err = dcs.Delete(*dc)
 	if err != nil {
 		t.Error(err)
 	}
 
-	dc, err = svc.GetByCode(code)
+	dc, err = dcs.GetByCode(dCode)
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			t.Error(err)
