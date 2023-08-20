@@ -7,6 +7,8 @@ const (
 	GATEWAY_TYPE = "gateway"
 	ADMIN_TYPE   = "admin"
 	DEFAULT_TYPE = "default"
+	OPEN_STATUS  = "open"
+	PAID_STATUS  = "paid"
 )
 
 type TransactionType string
@@ -19,10 +21,22 @@ func (t TransactionType) String() string {
 	return str
 }
 
+type TransactionStatus string
+
+func (t TransactionStatus) String() string {
+	str := string(t)
+	if str != PAID_STATUS {
+		str = OPEN_STATUS
+	}
+
+	return str
+}
+
 type Transaction struct {
 	gorm.Model
 	Title     *string
-	Amount    int64           `gorm:"not null"`
-	Type      TransactionType `gorm:"not null"`
-	UserPhone string          `gorm:"not null"`
+	Amount    int64             `gorm:"not null"`
+	Type      TransactionType   `gorm:"not null"`
+	UserPhone string            `gorm:"not null"`
+	Status    TransactionStatus `gorm:"default:open; not null"`
 }
