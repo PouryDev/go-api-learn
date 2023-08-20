@@ -31,10 +31,8 @@ func (dcs DiscountCodeService) Create(code string, maxUsers int, value int64, dc
 
 func (dcs DiscountCodeService) Update(dc models.DiscountCode) error {
 	res := dcs.DB.Save(dc)
-	if res.Error != nil {
-		return res.Error
-	}
-	return nil
+
+	return res.Error
 }
 
 func (dcs DiscountCodeService) Delete(dc models.DiscountCode) error {
@@ -43,12 +41,10 @@ func (dcs DiscountCodeService) Delete(dc models.DiscountCode) error {
 }
 
 func (dcs DiscountCodeService) IncreaseUsage(dc *models.DiscountCode) error {
-	usage := dc.UsedCount + 1
 	res := dcs.DB.Save(dc)
 	if res.Error != nil {
 		return res.Error
 	}
-	dc.UsedCount = usage
 	return nil
 }
 
