@@ -2,11 +2,16 @@ package services
 
 import (
 	"gorm.io/gorm"
+	"video/internal/database"
 	"video/internal/models"
 )
 
 type TransactionService struct {
 	db *gorm.DB
+}
+
+func NewTransactionService() *TransactionService {
+	return &TransactionService{db: database.NewDB()}
 }
 
 func (ts TransactionService) Create(amount int64, tType models.TransactionType, phone string, status models.TransactionStatus, title *string) (*models.Transaction, error) {
