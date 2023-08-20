@@ -14,13 +14,12 @@ func NewDiscountCodeService() *DiscountCodeService {
 	return &DiscountCodeService{DB: database.NewDB()}
 }
 
-func (dcs DiscountCodeService) Create(code string, maxUsers int, userCount int, value int64, dcType models.DiscountCodeType) (*models.DiscountCode, error) {
+func (dcs DiscountCodeService) Create(code string, maxUsers int, value int64, dcType models.DiscountCodeType) (*models.DiscountCode, error) {
 	dc := models.DiscountCode{
-		Code:      code,
-		MaxUsers:  maxUsers,
-		UsedCount: userCount,
-		Value:     value,
-		Type:      dcType,
+		Code:     code,
+		MaxUsers: maxUsers,
+		Value:    value,
+		Type:     dcType,
 	}
 	res := dcs.DB.Create(&dc)
 	if res.Error != nil {
@@ -30,19 +29,11 @@ func (dcs DiscountCodeService) Create(code string, maxUsers int, userCount int, 
 	return &dc, nil
 }
 
-func (dcs DiscountCodeService) Update(dc *models.DiscountCode, maxUsers int, usedCount int, value int64) error {
-	res := dcs.DB.Model(&models.DiscountCode{}).Where("id = ?", dc.ID).Updates(map[string]interface{}{
-		"max_users":   maxUsers,
-		"users_count": usedCount,
-		"value":       value,
-	})
+func (dcs DiscountCodeService) Update(dc models.DiscountCode) error {
+	res := dcs.DB.Save(dc)
 	if res.Error != nil {
 		return res.Error
 	}
-
-	dc.MaxUsers = maxUsers
-	dc.UsedCount = usedCount
-	dc.Value = value
 	return nil
 }
 
@@ -53,10 +44,30 @@ func (dcs DiscountCodeService) Delete(dc models.DiscountCode) error {
 
 func (dcs DiscountCodeService) IncreaseUsage(dc *models.DiscountCode) error {
 	usage := dc.UsedCount + 1
-	res := dcs.DB.Model(models.DiscountCode{}).Where("id = ?", dc.ID).Update("used_count", usage)
+	res := dcs.DB.Save(dc)
 	if res.Error != nil {
 		return res.Error
 	}
 	dc.UsedCount = usage
 	return nil
+}
+
+func (dcs DiscountCodeService) GetByCode(code string) (*models.DiscountCode, error) {
+	var dc models.DiscountCode
+	res := dcs.DB.Model(&models.DiscountCode{}).Where("`code` = ?", code).First(&dc)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return &dc, nil
+}
+
+func (dcs DiscountCodeService) Find(id uint) (*models.DiscountCode, error) {
+	var dc models.DiscountCode
+	res := dcs.DB.Model(&models.DiscountCode{}).Where("`id` = ?", id).First(&dc)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return &dc, nil
 }
