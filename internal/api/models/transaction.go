@@ -22,7 +22,7 @@ func (t TransactionType) String() string {
 type Transaction struct {
 	gorm.Model
 	Title     *string
-	Amount    int64
-	Type      TransactionType
-	UserPhone string
+	Amount    int64           `gorm:"not null"`
+	Type      TransactionType `gorm:"not null"`
+	UserPhone string          `gorm:"not null"`
 }
