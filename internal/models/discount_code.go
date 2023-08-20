@@ -20,9 +20,10 @@ func (dct DiscountCodeType) String() string {
 
 type DiscountCode struct {
 	gorm.Model
-	Code      string           `gorm:"unique; not null"`
-	MaxUsers  int              `gorm:"not null"`
-	UsedCount int              `gorm:"default:0"`
-	Value     int64            `gorm:"not null"`
-	Type      DiscountCodeType `gorm:"not null"`
+	Code         string           `gorm:"unique; not null"`
+	MaxUsers     int              `gorm:"not null"`
+	UsedCount    int              `gorm:"default:0"`
+	Value        int64            `gorm:"not null"`
+	Type         DiscountCodeType `gorm:"not null"`
+	Transactions []Transaction
 }
