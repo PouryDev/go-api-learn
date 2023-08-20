@@ -11,9 +11,7 @@ type DiscountCodeService struct {
 }
 
 func NewDiscountCodeService() *DiscountCodeService {
-	svc := database.Service{}
-	svc.NewService()
-	return &DiscountCodeService{DB: svc.DB}
+	return &DiscountCodeService{DB: database.NewDB()}
 }
 
 func (dcs DiscountCodeService) Create(code string, maxUsers int, userCount int, value int64, dcType models.DiscountCodeType) (*models.DiscountCode, error) {

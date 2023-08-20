@@ -11,9 +11,7 @@ type WalletService struct {
 }
 
 func NewWalletService() *WalletService {
-	svc := database.Service{}
-	svc.NewService()
-	return &WalletService{DB: svc.DB}
+	return &WalletService{DB: database.NewDB()}
 }
 
 func (ws WalletService) Create(userPhone string) (*models.Wallet, error) {
