@@ -1,11 +1,11 @@
-package video
+package services_test
 
 import (
 	"fmt"
 	"github.com/bxcodec/faker/v3"
 	"os"
 	"testing"
-	"video/internal/api/services"
+	"video/internal/services"
 )
 
 var phoneNumber string

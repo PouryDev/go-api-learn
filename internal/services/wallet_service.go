@@ -2,8 +2,8 @@ package services
 
 import (
 	"gorm.io/gorm"
-	"video/internal/api/models"
-	"video/pkg/database"
+	"video/internal/database"
+	"video/internal/models"
 )
 
 type WalletService struct {
