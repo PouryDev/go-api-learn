@@ -24,7 +24,7 @@ func TestCreateWallet(t *testing.T) {
 		t.Error(fmt.Sprintf("Failed to create wallet: %s", err))
 	}
 
-	wallet, err = ws.Find(wallet.PhoneNumber)
+	wallet, err = ws.GetByPhoneNumber(wallet.PhoneNumber)
 	if err != nil {
 		t.Error(fmt.Sprintf("Wallet hasn't been created but no error has been generated: %s", err))
 	}
@@ -32,7 +32,7 @@ func TestCreateWallet(t *testing.T) {
 
 func TestIncreaseBalance(t *testing.T) {
 	ws := services.NewWalletService()
-	wallet, err := ws.Find(phoneNumber)
+	wallet, err := ws.GetByPhoneNumber(phoneNumber)
 	if err != nil {
 		t.Error(fmt.Sprintf("Could not find wallet: %s", err))
 	}
@@ -44,7 +44,7 @@ func TestIncreaseBalance(t *testing.T) {
 	}
 	balance += 5000
 
-	wallet, err = ws.Find(phoneNumber)
+	wallet, err = ws.GetByPhoneNumber(phoneNumber)
 	if err != nil {
 		t.Error(err)
 	}

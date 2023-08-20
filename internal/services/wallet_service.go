@@ -41,9 +41,19 @@ func (ws WalletService) GetUserBalance(userPhone string) (*int64, error) {
 	return &wallet.Balance, nil
 }
 
-func (ws WalletService) Find(userPhone string) (*models.Wallet, error) {
+func (ws WalletService) GetByPhoneNumber(phoneNumber string) (*models.Wallet, error) {
 	var wallet models.Wallet
-	res := ws.DB.Model(&models.Wallet{}).Where("phone_number = ?", userPhone).First(&wallet)
+	res := ws.DB.Model(&models.Wallet{}).Where("phone_number = ?", phoneNumber).First(&wallet)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return &wallet, nil
+}
+
+func (ws WalletService) Find(id uint) (*models.Wallet, error) {
+	var wallet models.Wallet
+	res := ws.DB.Model(&models.Wallet{}).Where("`id` = ?", id).First(&wallet)
 	if res.Error != nil {
 		return nil, res.Error
 	}
